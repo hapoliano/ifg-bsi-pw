@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+</head>
+
+<script src="/js/usuario.js"></script>
+<body>
+<header class="topo container-padding flex">
+    <img src="images/logo-bytebank.svg" alt="Bytebank">
+</header>
+
+<main class="container-padding flex">
+    <section class="block-saldo">
+        <h2>Bem-vindo ao Bytebank</h2>
+        <p>Faça login para acessar sua conta.</p>
+
+        <form id="userForm">
+            <div class="campo">
+                <label for="nome">Nome:</label><br>
+                <input type="text" name="nome" id="nome" class="campo-input" placeholder="Digite seu nome"
+                       required/>
+            </div>
+            <div class="campo">
+                <label for="email">E-mail:</label><br>
+                <input type="email" name="email" id="email" class="campo-input" placeholder="Digite seu e-mail"
+                       required/>
+            </div>
+            <div class="campo">
+                <label for="senha">Senha:</label><br>
+                <input type="password" name="senha" id="senha" class="campo-input"
+                       placeholder="Digite sua senha" required/>
+            </div>
+            <div class="campo">
+                <button type="button" class="btn" onclick="salvarUsuario()">
+                    Cadastrar
+                </button>
+            </div>
+        </form>
+
+        <h1>Lista de Usuários</h1>
+        <ul id="userList"></ul>
+    </section>
+</main>
+</body>
+</html>

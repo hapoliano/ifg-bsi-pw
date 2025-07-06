@@ -34,6 +34,8 @@ public class Usuario {
         this.tipo = dto.getTipo();
     }
 
+
+
     public Integer getId() {
         return id;
     }

@@ -49,4 +49,15 @@ public class UsuarioDAO {
         Query query = em.createQuery(hql);
         return (List<UsuarioListDTO>) query.getResultList();
     }
+
+    public Usuario findByEmail(String email) {
+        try {
+            String hql = "from Usuario u where u.email = :email";
+            return em.createQuery(hql, Usuario.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (jakarta.persistence.NoResultException e) {
+            return null;
+        }
+    }
 }

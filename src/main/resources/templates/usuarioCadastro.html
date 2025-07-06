@@ -11,13 +11,13 @@
 <script src="/js/usuario.js"></script>
 <body>
 <header class="topo container-padding flex">
-    <img src="images/logo-bytebank.svg" alt="Bytebank">
+    <img src="/images/logo-bytebank.svg" alt="Bytebank">
 </header>
 
 <main class="container-padding flex">
     <section class="block-saldo">
-        <h2>Bem-vindo ao Bytebank</h2>
-        <p>Faça login para acessar sua conta.</p>
+        <h2>Cadastro de usuário Bytebank</h2>
+        <p>Faça o cadastro do usuário no bytebank.</p>
 
         <form id="userForm">
             <div class="campo">
@@ -35,6 +35,21 @@
                 <input type="password" name="senha" id="senha" class="campo-input"
                        placeholder="Digite sua senha" required/>
             </div>
+
+            <div class="campo">
+                <label>Tipo de Conta:</label>
+                <div class="opcoes-radio">
+                    <div>
+                        <input type="radio" id="tipoUsuario" name="tipoConta" value="USUARIO" checked>
+                        <label for="tipoUsuario">Usuário</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="tipoAdmin" name="tipoConta" value="ADMIN">
+                        <label for="tipoAdmin">Administrador</label>
+                    </div>
+                </div>
+            </div>
+
             <div class="campo">
                 <button type="button" class="btn" onclick="salvarUsuario()">
                     Cadastrar

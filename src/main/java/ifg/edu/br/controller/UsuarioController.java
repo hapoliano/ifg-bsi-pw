@@ -16,16 +16,16 @@ import java.util.List;
 public class UsuarioController {
 
     @Inject
-    Template usuarioView;
+    Template usuarioCadastro;
 
     @Inject
     UsuarioBO usuarioBO;
 
     @GET
-    @Path("view")
+    @Path("cadastro")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance getView() {
-        return usuarioView.instance();
+        return usuarioCadastro.instance();
     }
 
     @GET

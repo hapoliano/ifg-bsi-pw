@@ -16,8 +16,12 @@ public class Usuario {
     private String email;
     @Column
     private String senha;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoUsuario tipo;
     @Transient
     private Boolean teste;
+
 
     //Construtores
     public Usuario() {
@@ -27,6 +31,7 @@ public class Usuario {
         this.nome = dto.getNome();
         this.email = dto.getEmail();
         this.senha = dto.getSenha();
+        this.tipo = dto.getTipo();
     }
 
     public Integer getId() {
@@ -67,5 +72,13 @@ public class Usuario {
 
     public void setTeste(Boolean teste) {
         this.teste = teste;
+    }
+
+    public TipoUsuario getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
     }
 }

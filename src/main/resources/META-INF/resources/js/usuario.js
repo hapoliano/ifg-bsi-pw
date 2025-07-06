@@ -2,7 +2,8 @@ function criarObjetoUsuarioDTO() {
     return {
         nome: "",
         email: "",
-        senha: ""
+        senha: "",
+        tipo: ""
     };
 }
 
@@ -11,6 +12,7 @@ function popularUsuarioDTO(usuarioDTO) {
     usuarioDTO.nome = document.getElementById('nome').value;
     usuarioDTO.email = document.getElementById('email').value;
     usuarioDTO.senha = document.getElementById('senha').value;
+    usuarioDTO.tipo = document.querySelector('input[name="tipoConta"]:checked').value;
     return usuarioDTO;
 }
 
@@ -56,7 +58,7 @@ function atualizarLista() {
             userList.innerHTML = '';
             usuarios.forEach(usuarioDTO => {
                 const li = document.createElement('li');
-                li.textContent = 'Id: ' + usuarioDTO.id + ', Nome: ' + usuarioDTO.nome + ', E-mail: ' + usuarioDTO.email;
+                li.textContent = 'Id: ' + usuarioDTO.id + ', Nome: ' + usuarioDTO.nome + ', E-mail: ' + usuarioDTO.email + ', Tipo: ' + usuarioDTO.tipo;
                 userList.appendChild(li);
             });
         })

@@ -22,7 +22,7 @@ function fazerLogin() {
         .then(response => {
             if (response.ok) {
                 console.log("Login bem-sucedido!");
-                window.location.href = '/usuarioCadastro.html';
+                window.location.href = '/homepage';
             } else {
                 alert("E-mail ou senha inválidos. Tente novamente.");
             }

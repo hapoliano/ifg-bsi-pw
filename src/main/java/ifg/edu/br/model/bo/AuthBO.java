@@ -11,12 +11,12 @@ public class AuthBO {
     @Inject
     UsuarioDAO usuarioDAO;
 
-    public boolean validarLogin(String email, String senha) {
+    public Usuario validarLogin(String email, String senha) {
         Usuario usuario = usuarioDAO.findByEmail(email);
 
-        if (usuario == null) {
-            return false;
+        if (usuario != null && senha.equals(usuario.getSenha())) {
+            return usuario;
         }
-        return senha.equals(usuario.getSenha());
+        return null;
     }
 }

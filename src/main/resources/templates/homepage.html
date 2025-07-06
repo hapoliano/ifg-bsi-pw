@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Homepage - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+</head>
+
+<body>
+<header class="topo container-padding flex">
+    <img src="/images/logo-bytebank.svg" alt="Bytebank">
+</header>
+
+<main class="container-padding flex">
+    <section class="block-saldo">
+
+        <h2>Bem-vindo(a) ao Bytebank, {nomeDoUsuario}!</h2>
+        <p>Adcionar alguma frase legal</p>
+
+        <hr style="margin: 2rem 0;">
+
+        {#if isAdmin}
+            <div class="admin-panel">
+                <h3>Painel Administrativo</h3>
+                <ul>
+                    <li><a href="/" class="link-admin">Gerenciar Usuários</a></li>
+                </ul>
+            </div>
+        {#else}
+            <p>Explore os serviços disponíveis no menu principal.</p>
+        {/if}
+
+    </section>
+</main>
+</body>
+</html>

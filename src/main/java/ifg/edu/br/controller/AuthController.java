@@ -2,11 +2,13 @@ package ifg.edu.br.controller;
 
 import ifg.edu.br.model.bo.AuthBO;
 import ifg.edu.br.model.dto.LoginDTO;
+import ifg.edu.br.model.entity.Usuario;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 
 @Path("/auth")
@@ -30,16 +32,22 @@ public class AuthController {
     @POST
     @Path("/login")
     public Response doLogin(LoginDTO loginDTO) {
-        try {
-            boolean loginValido = authBO.validarLogin(loginDTO.getEmail(), loginDTO.getSenha());
+        Usuario usuarioLogado = authBO.validarLogin(loginDTO.getEmail(), loginDTO.getSenha());
 
-            if (loginValido) {
-                return Response.ok().entity("{\"message\":\"Login bem-sucedido!\"}").build();
-            } else {
-                return Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\":\"E-mail ou senha inválidos\"}").build();
-            }
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"error\":\"Ocorreu um erro interno.\"}").build();
+        if (usuarioLogado != null) {
+            NewCookie cookie = new NewCookie.Builder("userId")
+                    .value(usuarioLogado.getId().toString())
+                    .path("/")
+                    .maxAge(3600)
+                    .build();
+
+            return Response.ok("{\"message\":\"Login bem-sucedido!\"}")
+                    .cookie(cookie)
+                    .build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("{\"error\":\"E-mail ou senha inválidos\"}")
+                    .build();
         }
     }
 }

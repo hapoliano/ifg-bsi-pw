@@ -11,6 +11,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.NewCookie;
 import jakarta.ws.rs.core.Response;
 
+import java.net.URI;
+
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -49,5 +51,20 @@ public class AuthController {
                     .entity("{\"error\":\"E-mail ou senha inválidos\"}")
                     .build();
         }
+    }
+
+    @GET
+    @Path("/logout")
+    public Response doLogout() {
+        NewCookie cookie = new NewCookie.Builder("userId")
+                .value("")
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        return Response.status(Response.Status.SEE_OTHER)
+                .location(URI.create("/auth/login"))
+                .cookie(cookie)
+                .build();
     }
 }

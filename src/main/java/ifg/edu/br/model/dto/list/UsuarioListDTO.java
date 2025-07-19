@@ -1,20 +1,24 @@
 package ifg.edu.br.model.dto.list;
 
+import ifg.edu.br.model.entity.TipoUsuario;
+
 public class UsuarioListDTO {
 
     //Atributos
     private Integer id;
     private String nome;
     private String email;
+    private TipoUsuario tipo;
 
     //Construtores
     public UsuarioListDTO() {
     }
 
-    public UsuarioListDTO(Integer id, String nome, String email) {
+    public UsuarioListDTO(Integer id, String nome, String email, TipoUsuario tipo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
+        this.tipo = tipo;
     }
 
     //Getters and Setters
@@ -41,4 +45,8 @@ public class UsuarioListDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public TipoUsuario getTipo() { return tipo; }
+
+    public void setTipo(TipoUsuario tipo) { this.tipo = tipo; }
 }

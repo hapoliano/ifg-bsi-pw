@@ -1,0 +1,20 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/homepage" class="navbar-logo">
+            <img src="/images/logo-bytebank.svg" alt="Bytebank">
+        </a>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/homepage" class="nav-links">Home</a>
+            </li>
+            {#if isAdmin}
+                <li class="nav-item">
+                    <a href="/usuario/cadastro" class="nav-links">Cadastrar Usuário</a>
+                </li>
+            {/if}
+            <li class="nav-item">
+                <a href="/auth/logout" class="nav-links nav-logout">Sair</a>
+            </li>
+        </ul>
+    </div>
+</nav>

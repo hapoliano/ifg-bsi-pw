@@ -43,7 +43,7 @@ public class UsuarioDAO {
     public List<UsuarioListDTO> getAllUsuario() {
         //language=hql
         String hql = "select " +
-                "new ifg.edu.br.model.dto.list.UsuarioListDTO(u.id, u.nome, u.email) " +
+                "new ifg.edu.br.model.dto.list.UsuarioListDTO(u.id, u.nome, u.email, u.tipo) " +
                 "from Usuario u";
 
         Query query = em.createQuery(hql);

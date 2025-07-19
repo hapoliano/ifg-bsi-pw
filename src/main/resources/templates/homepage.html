@@ -9,10 +9,7 @@
 </head>
 
 <body>
-<header class="topo container-padding flex">
-    <img src="/images/logo-bytebank.svg" alt="Bytebank">
-</header>
-
+{#include navbar.html/}
 <main class="container-padding flex">
     <section class="block-saldo">
 
@@ -22,14 +19,14 @@
         <hr style="margin: 2rem 0;">
 
         {#if isAdmin}
-            <div class="admin-panel">
-                <h3>Painel Administrativo</h3>
-                <ul>
-                    <li><a href="/" class="link-admin">Gerenciar Usuários</a></li>
-                </ul>
-            </div>
+        <div class="admin-panel">
+            <h3>Painel Administrativo</h3>
+            <ul>
+                <li><a href="/usuario/cadastro" class="link-admin">Gerenciar Usuários</a></li>
+            </ul>
+        </div>
         {#else}
-            <p>Explore os serviços disponíveis no menu principal.</p>
+        <p>Explore os serviços disponíveis no menu principal.</p>
         {/if}
 
     </section>

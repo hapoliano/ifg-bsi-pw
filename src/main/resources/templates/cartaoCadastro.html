@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cadastro de Cartão - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+</head>
+
+<script src="/js/cartao.js"></script>
+
+<body>
+{#include navbar/}
+<main class="container-padding flex">
+    <section class="block-saldo">
+        <h2>Adicionar Novo Cartão de Crédito</h2>
+        <p>Preencha os dados para ter uma visão geral dos seus gastos.</p>
+
+        <form id="cartaoForm">
+            <div class="campo">
+                <label for="banco">Banco Emissor:</label><br>
+                <input type="text" name="banco" id="banco" class="campo-input" placeholder="Ex: Nubank, Itaú, etc." required/>
+            </div>
+
+            <div class="campo">
+                <label for="dataValidade">Data de Validade:</label><br>
+                <input type="text" name="dataValidade" id="dataValidade" class="campo-input" placeholder="MM/AA" required/>
+            </div>
+
+            <div class="campo">
+                <label for="limiteCredito">Limite de Crédito (R$):</label><br>
+                <input type="number" step="0.01" name="limiteCredito" id="limiteCredito" class="campo-input" placeholder="Ex: 1500.00" required/>
+            </div>
+
+            <div class="campo">
+                <label for="valorGasto">Valor da Fatura Atual (R$):</label><br>
+                <input type="number" step="0.01" name="valorGasto" id="valorGasto" class="campo-input" placeholder="Ex: 350.50" required/>
+            </div>
+
+            <div class="campo">
+                <button type="button" class="btn" onclick="salvarCartao()">
+                    Salvar Cartão
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

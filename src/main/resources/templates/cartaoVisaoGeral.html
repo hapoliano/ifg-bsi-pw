@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Visão Geral dos Cartões - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+    <style>
+        /* Estilos adicionais específicos para esta página */
+        .visao-geral-container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .summary-cards {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .summary-card {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .summary-card h3 {
+            color: #4a5568;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2a69ac;
+        }
+
+        .card-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-item {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-info h4 {
+            margin: 0 0 0.25rem 0;
+            color: #1a202c;
+        }
+
+        .card-info p {
+            margin: 0;
+            color: #718096;
+        }
+
+        .card-values {
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+{#include navbar/}
+<main class="container-padding flex">
+    <section class="block-saldo visao-geral-container">
+        <h2>Visão Geral dos Cartões</h2>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Limite Total</h3>
+                <p class="amount">R$ {visao.limiteTotal}</p>
+            </div>
+            <div class="summary-card">
+                <h3>Gastos Totais</h3>
+                <p class="amount" style="color: #c53030;">R$ {visao.gastoTotal}</p>
+            </div>
+        </div>
+
+        <a href="/cartoes/cadastro" class="btn" style="margin-bottom: 2rem; text-decoration: none; display: inline-block;">Adicionar Novo Cartão</a>
+
+        <ul class="card-list">
+            {#if visao.cartoes.isEmpty}
+            <p>Você ainda não cadastrou nenhum cartão.</p>
+            {#else}
+            {#for cartao in visao.cartoes}
+            <li class="card-item">
+                <div class="card-info">
+                    <h4>{cartao.banco}</h4>
+                    <p>Validade: {cartao.dataValidade}</p>
+                </div>
+                <div class="card-values">
+                    <h4>Limite: R$ {cartao.limiteCredito}</h4>
+                    <p>Fatura Atual: R$ {cartao.valorGasto}</p>
+                </div>
+            </li>
+            {/for}
+            {/if}
+        </ul>
+    </section>
+</main>
+</body>
+</html>

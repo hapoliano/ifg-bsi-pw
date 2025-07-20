@@ -8,6 +8,7 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -23,7 +24,10 @@ public class UsuarioBO {
 
     @Transactional
     public Response saveUsuario(UsuarioDTO usuarioDTO) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String senha = passwordEncoder.encode(usuarioDTO.getSenha());
         Usuario usuario = new Usuario(usuarioDTO);
+        usuario.setSenha(senha);
         dao.save(usuario);
         return Response.status(Response.Status.CREATED).entity(usuario.getId()).build();
     }

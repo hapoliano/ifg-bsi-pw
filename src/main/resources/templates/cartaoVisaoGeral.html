@@ -6,81 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Visão Geral dos Cartões - Bytebank</title>
     <link rel="stylesheet" href="/css/app.css" type="text/css"/>
-    <style>
-        /* Estilos adicionais específicos para esta página */
-        .visao-geral-container {
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .summary-cards {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            margin-bottom: 2.5rem;
-            flex-wrap: wrap;
-        }
-
-        .summary-card {
-            background-color: #f7fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        .summary-card h3 {
-            color: #4a5568;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .summary-card .amount {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2a69ac;
-        }
-
-        .card-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .card-item {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .card-info h4 {
-            margin: 0 0 0.25rem 0;
-            color: #1a202c;
-        }
-
-        .card-info p {
-            margin: 0;
-            color: #718096;
-        }
-
-        .card-values {
-            text-align: right;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/cartaoVisaoGeral.css" type="text/css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-{#include navbar/}
+    {#include navbar/}
 <main class="container-padding flex">
     <section class="block-saldo visao-geral-container">
         <h2>Visão Geral dos Cartões</h2>
+
+        <div class="chart-container">
+            <h3>Gráfico de Limites vs. Faturas</h3>
+            <canvas id="graficoCartoes"></canvas>
+        </div>
 
         <div class="summary-cards">
             <div class="summary-card">
@@ -95,25 +33,116 @@
 
         <a href="/cartoes/cadastro" class="btn" style="margin-bottom: 2rem; text-decoration: none; display: inline-block;">Adicionar Novo Cartão</a>
 
+        <h3>Detalhes dos Cartões</h3>
         <ul class="card-list">
             {#if visao.cartoes.isEmpty}
-            <p>Você ainda não cadastrou nenhum cartão.</p>
+                <p>Você ainda não cadastrou nenhum cartão.</p>
             {#else}
-            {#for cartao in visao.cartoes}
-            <li class="card-item">
-                <div class="card-info">
-                    <h4>{cartao.banco}</h4>
-                    <p>Validade: {cartao.dataValidade}</p>
-                </div>
-                <div class="card-values">
-                    <h4>Limite: R$ {cartao.limiteCredito}</h4>
-                    <p>Fatura Atual: R$ {cartao.valorGasto}</p>
-                </div>
-            </li>
-            {/for}
+                {#for cartao in visao.cartoes}
+                    <li class="card-item">
+                        <div class="card-info">
+                            <h4>{cartao.banco}</h4>
+                            <p>Validade: {cartao.dataValidade}</p>
+                        </div>
+                        <div class="card-values">
+                            <h4>Limite: R$ {cartao.limiteCredito}</h4>
+                            <p>Fatura Atual: R$ {cartao.valorGasto}</p>
+                        </div>
+                    </li>
+                {/for}
             {/if}
         </ul>
     </section>
 </main>
+
+<script>
+    // Executa o script depois que a página carregar
+    window.onload = function() {
+        // Pega os dados da visão geral injetados pelo Qute
+        const visaoGeral = {
+            limiteTotal: {visao.limiteTotal},
+            gastoTotal: {visao.gastoTotal},
+            cartoes: [
+                {#for cartao in visao.cartoes}
+                {
+                    banco: '{cartao.banco}',
+                    limiteCredito: {cartao.limiteCredito},
+                    valorGasto: {cartao.valorGasto}
+                },
+                {/for}
+            ]
+        };
+
+        // Prepara os dados para o gráfico
+        const labels = ['Total'];
+        const limites = [visaoGeral.limiteTotal];
+        const gastos = [visaoGeral.gastoTotal];
+
+        visaoGeral.cartoes.forEach(cartao => {
+            labels.push(cartao.banco);
+            limites.push(cartao.limiteCredito);
+            gastos.push(cartao.valorGasto);
+        });
+
+        const data = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Limite do Cartão (R$)',
+                    data: limites,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)', // Azul
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Fatura Atual (R$)',
+                    data: gastos,
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)', // Vermelho
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        // Configuração do gráfico
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return 'R$ ' + value.toLocaleString('pt-BR');
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Renderiza o gráfico
+        const ctx = document.getElementById('graficoCartoes').getContext('2d');
+        new Chart(ctx, config);
+    };
+</script>
+
 </body>
 </html>

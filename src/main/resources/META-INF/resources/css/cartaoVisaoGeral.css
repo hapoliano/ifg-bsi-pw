@@ -1,0 +1,73 @@
+.visao-geral-container {
+    width: 100%;
+    max-width: 900px;
+}
+
+.summary-cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.summary-card h3 {
+    color: #4a5568;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.summary-card .amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2a69ac;
+}
+
+.chart-container {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card-list {
+    list-style: none;
+    padding: 0;
+}
+
+.card-item {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.card-info h4 {
+    margin: 0 0 0.25rem 0;
+    color: #1a202c;
+}
+
+.card-info p {
+    margin: 0;
+    color: #718096;
+}
+
+.card-values {
+    text-align: right;
+}

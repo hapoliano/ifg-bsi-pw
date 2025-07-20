@@ -18,6 +18,9 @@ public class UsuarioBO {
     @Inject
     UsuarioDAO dao;
 
+    @Inject
+    LogBO logBO;
+
     public List<UsuarioListDTO> getUsuarios() {
         return dao.getAllUsuario();
     }
@@ -29,6 +32,7 @@ public class UsuarioBO {
         Usuario usuario = new Usuario(usuarioDTO);
         usuario.setSenha(senha);
         dao.save(usuario);
+        logBO.registrarAcao(usuario, "CADASTRO_USUARIO - Novo usuário: " + usuario.getEmail());
         return Response.status(Response.Status.CREATED).entity(usuario.getId()).build();
     }
 }

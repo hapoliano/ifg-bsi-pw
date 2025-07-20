@@ -24,9 +24,11 @@ public class CartaoCreditoBO {
     @Inject
     CartaoCreditoDAO dao;
 
+    @Inject
+    LogBO logBO;
+
     @Transactional
     public void saveCartao(CartaoCreditoDTO dto, Usuario usuario) {
-        // Validação da data
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yy");
         YearMonth ym = YearMonth.parse(dto.getDataValidade(), formatter);
         LocalDate dataValidade = ym.atEndOfMonth();
@@ -46,6 +48,8 @@ public class CartaoCreditoBO {
         }
 
         dao.save(cartao);
+
+        logBO.registrarAcao(usuario, "CADASTRO_CARTAO - Banco: " + dto.getBanco());
     }
 
     public VisaoGeralDTO getVisaoGeral(Usuario usuario) {

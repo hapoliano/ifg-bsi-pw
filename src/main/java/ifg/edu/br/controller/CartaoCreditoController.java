@@ -1,6 +1,7 @@
 package ifg.edu.br.controller;
 
 import ifg.edu.br.model.bo.CartaoCreditoBO;
+import ifg.edu.br.model.bo.LogBO;
 import ifg.edu.br.model.dao.UsuarioDAO;
 import ifg.edu.br.model.dto.CartaoCreditoDTO;
 import ifg.edu.br.model.dto.list.VisaoGeralDTO;
@@ -24,6 +25,9 @@ public class CartaoCreditoController {
     CartaoCreditoBO bo;
 
     @Inject
+    LogBO logBO;
+
+    @Inject
     Template cartaoCadastro;
 
     @Inject
@@ -33,29 +37,27 @@ public class CartaoCreditoController {
     @Path("/cadastro")
     @Produces(MediaType.TEXT_HTML)
     public Response getPaginaCadastro(@CookieParam("userId") String userId) {
-        // 1. Verifica se o usuário está logado
+
         if (userId == null || userId.isEmpty()) {
+            logBO.registrarAcao(null, "ACESSO_NAO_AUTORIZADO - /cartoes/cadastro");
             return Response.status(Response.Status.SEE_OTHER)
                     .location(URI.create("/auth/login"))
                     .build();
         }
 
         try {
-            // 2. Busca o usuário no banco de dados
             Integer id = Integer.parseInt(userId);
             Usuario usuarioLogado = usuarioDAO.find(id);
 
             if (usuarioLogado == null) {
-                // Se não encontrar o usuário, redireciona para o login
+                logBO.registrarAcao(null, "TENTATIVA_ACESSO_INVALIDA - Usuário não encontrado: " + id);
                 return Response.status(Response.Status.SEE_OTHER)
                         .location(URI.create("/auth/login"))
                         .build();
             }
 
-            // 3. Verifica se o usuário é um administrador
             boolean isAdmin = usuarioLogado.getTipo() == TipoUsuario.ADMIN;
 
-            // 4. Prepara a instância do template com os dados corretos
             TemplateInstance templateInstance = cartaoCadastro
                     .data("isAdmin", isAdmin)
                     .data("nomeDoUsuario", usuarioLogado.getNome());
@@ -63,7 +65,7 @@ public class CartaoCreditoController {
             return Response.ok(templateInstance).build();
 
         } catch (NumberFormatException e) {
-            // Se o cookie for inválido, redireciona para o login
+            logBO.registrarAcao(null, "ACESSO_NAO_AUTORIZADO - Cookie de usuário inválido");
             return Response.status(Response.Status.SEE_OTHER)
                     .location(URI.create("/auth/login"))
                     .build();
@@ -75,6 +77,7 @@ public class CartaoCreditoController {
     @Produces(MediaType.TEXT_HTML)
     public Response getPaginaVisaoGeral(@CookieParam("userId") String userId) {
         if (userId == null || userId.isEmpty()) {
+            logBO.registrarAcao(null, "ACESSO_NAO_AUTORIZADO - /cartoes/visao-geral");
             return Response.seeOther(URI.create("/auth/login")).build();
         }
         Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
@@ -92,6 +95,7 @@ public class CartaoCreditoController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response salvarCartao(CartaoCreditoDTO dto, @CookieParam("userId") String userId) {
         if (userId == null || userId.isEmpty()) {
+            logBO.registrarAcao(null, "TENTATIVA_SALVAR_CARTAO_NAO_AUTORIZADA");
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         try {

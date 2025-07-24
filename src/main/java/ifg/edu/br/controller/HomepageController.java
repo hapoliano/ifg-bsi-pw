@@ -1,5 +1,6 @@
 package ifg.edu.br.controller;
 
+import ifg.edu.br.model.bo.LogBO;
 import ifg.edu.br.model.dao.UsuarioDAO;
 import ifg.edu.br.model.entity.TipoUsuario;
 import ifg.edu.br.model.entity.Usuario;
@@ -24,12 +25,16 @@ public class HomepageController {
     @Inject
     UsuarioDAO usuarioDAO;
 
+    @Inject
+    LogBO logBO;
+
     @GET
     @Path("/homepage")
     @Produces(MediaType.TEXT_HTML)
     public Response getHomepage(@CookieParam("userId") String userId) {
 
         if (userId == null || userId.isEmpty()) {
+            logBO.registrarAcao(null, "ACESSO_NAO_AUTORIZADO - /homepage");
             return Response.status(Response.Status.SEE_OTHER)
                     .location(URI.create("/auth/login"))
                     .build();
@@ -40,6 +45,7 @@ public class HomepageController {
             Usuario usuarioLogado = usuarioDAO.find(id);
 
             if (usuarioLogado == null) {
+                logBO.registrarAcao(null, "TENTATIVA_ACESSO_INVALIDA - Usuário não encontrado: " + id);
                 return Response.status(Response.Status.SEE_OTHER)
                         .location(URI.create("/auth/login"))
                         .build();
@@ -54,6 +60,7 @@ public class HomepageController {
             return Response.ok(templateInstance).build();
 
         } catch (NumberFormatException e) {
+            logBO.registrarAcao(null, "ACESSO_NAO_AUTORIZADO - Cookie de usuário inválido");
             return Response.status(Response.Status.SEE_OTHER)
                     .location(URI.create("/auth/login"))
                     .build();

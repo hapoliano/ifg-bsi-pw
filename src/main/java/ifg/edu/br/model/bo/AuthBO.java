@@ -22,10 +22,13 @@ public class AuthBO {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
             if (passwordEncoder.matches(senha, usuario.getSenha())) {
-                logBO.registrarAcao(usuario, "LOGIN_SUCESSO");
                 return usuario;
             }
         }
         return null;
+    }
+
+    public Usuario findUsuarioById(Integer id) {
+        return usuarioDAO.find(id);
     }
 }

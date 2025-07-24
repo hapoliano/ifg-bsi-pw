@@ -23,4 +23,8 @@ public class CartaoCreditoDAO {
                 .setParameter("usuario", usuario)
                 .getResultList();
     }
+
+    public CartaoCredito find(Long id) {
+        return em.find(CartaoCredito.class, id);
+    }
 }

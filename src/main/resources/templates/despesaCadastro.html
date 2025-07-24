@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cadastro de Despesa - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+</head>
+
+<script src="/js/despesa.js"></script>
+
+<body>
+    {#include navbar.html/}
+<main class="container-padding flex">
+    <section class="block-saldo">
+        <h2>Adicionar Nova Despesa</h2>
+        <p>Preencha os dados para registrar seu gasto.</p>
+
+        <form id="despesaForm">
+            <div class="campo">
+                <label for="descricao">Descrição:</label><br>
+                <input type="text" name="descricao" id="descricao" class="campo-input" placeholder="Ex: Almoço no restaurante" required/>
+            </div>
+            <div class="campo">
+                <label for="valor">Valor (R$):</label><br>
+                <input type="number" step="0.01" name="valor" id="valor" class="campo-input" placeholder="Ex: 42.50" required/>
+            </div>
+            <div class="campo">
+                <label for="data">Data da Compra:</label><br>
+                <input type="date" name="data" id="data" class="campo-input" required/>
+            </div>
+            <div class="campo">
+                <label for="categoria">Categoria:</label><br>
+                <select id="categoria" class="campo-input">
+                    <option value="">Selecione uma categoria</option>
+                    {#for cat in categorias}
+                        <option value="{cat.id}">{cat.nome}</option>
+                    {/for}
+                </select>
+            </div>
+            <div class="campo">
+                <label for="cartao">Pagar com Cartão de Crédito:</label><br>
+                <select id="cartao" class="campo-input">
+                    <option value="">Não usar cartão</option>
+                    {#for cartao in cartoes}
+                        <option value="{cartao.id}">{cartao.banco}</option>
+                    {/for}
+                </select>
+            </div>
+            <div class="campo">
+                <button type="button" class="btn" onclick="salvarDespesa()">
+                    Registrar Despesa
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

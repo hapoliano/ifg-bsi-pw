@@ -1,7 +1,9 @@
 package ifg.edu.br.bootstrap;
 
 import ifg.edu.br.model.bo.LogBO;
+import ifg.edu.br.model.dao.CategoriaDAO;
 import ifg.edu.br.model.dao.UsuarioDAO;
+import ifg.edu.br.model.entity.Categoria;
 import ifg.edu.br.model.entity.TipoUsuario;
 import ifg.edu.br.model.entity.Usuario;
 import io.quarkus.runtime.StartupEvent;
@@ -18,6 +20,9 @@ public class Bootstrap {
     UsuarioDAO usuarioDAO;
 
     @Inject
+    CategoriaDAO categoriaDAO;
+
+    @Inject
     LogBO logBO;
 
     @Inject
@@ -25,8 +30,12 @@ public class Bootstrap {
 
     @Transactional
     void onStart(@Observes StartupEvent ev) {
-        if (usuarioDAO.findByEmail("admin@bytebank.com") != null) {
+        if (usuarioDAO.findByEmail("apoliano@bytebank.com") != null) {
             return;
+        }
+
+        if (categoriaDAO.listAll().isEmpty()) {
+            criarCategorias();
         }
 
         System.out.println("### EXECUTANDO BOOTSTRAP ###");
@@ -47,5 +56,20 @@ public class Bootstrap {
 
         logBO.registrarAcao(null, "BOOTSTRAP - Usuários iniciais (1 Admin, 1 Usuário) criados com sucesso.");
         System.out.println("### BOOTSTRAP FINALIZADO ###");
+    }
+
+    private void criarCategorias() {
+        System.out.println("### EXECUTANDO BOOTSTRAP - CRIANDO CATEGORIAS ###");
+
+        String[] nomesCategorias = {"Alimentação", "Transporte", "Lazer", "Moradia", "Saúde", "Educação", "Compras", "Outros"};
+
+        for (String nome : nomesCategorias) {
+            Categoria categoria = new Categoria();
+            categoria.setNome(nome);
+            categoriaDAO.save(categoria);
+        }
+
+        logBO.registrarAcao(null, "BOOTSTRAP - Categorias iniciais criadas com sucesso.");
+        System.out.println("### BOOTSTRAP DE CATEGORIAS FINALIZADO ###");
     }
 }

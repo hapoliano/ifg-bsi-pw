@@ -1,0 +1,35 @@
+.log-container {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    text-align: center;
+}
+
+.tabela-wrapper {
+    overflow-x: auto; /* Garante a rolagem em telas pequenas */
+    margin-top: 2rem;
+}
+
+#logTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+#logTable th, #logTable td {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 15px;
+}
+
+#logTable th {
+    background-color: #f7fafc;
+    color: #4a5568;
+    font-weight: 600;
+}
+
+#logTable tbody tr:hover {
+    background-color: #f7fafc;
+}

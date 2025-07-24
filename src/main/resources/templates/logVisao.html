@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Visualizador de Logs - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/logVisao.css" type="text/css"/>
+</head>
+
+<script src="/js/log.js"></script>
+
+<body>
+    {#include navbar.html/}
+<main class="container-padding flex">
+    <section class="log-container">
+        <h2>Visualizador de Logs do Sistema</h2>
+        <p>Ações recentes dos usuários e do sistema.</p>
+
+        <div class="campo">
+            <input type="text" id="filtro" class="campo-input" placeholder="Filtrar por ação ou e-mail..."/>
+        </div>
+
+        <div class="tabela-wrapper">
+            <table id="logTable">
+                <thead>
+                <tr>
+                    <th>Data e Hora</th>
+                    <th>Usuário</th>
+                    <th>Ação</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+</html>

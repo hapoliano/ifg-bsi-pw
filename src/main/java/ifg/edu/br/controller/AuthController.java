@@ -61,21 +61,6 @@ public class AuthController {
 
     @GET
     @Path("/logout")
-    public Response doLogout() {
-        NewCookie cookie = new NewCookie.Builder("userId")
-                .value("")
-                .path("/")
-                .maxAge(0)
-                .build();
-
-        return Response.status(Response.Status.SEE_OTHER)
-                .location(URI.create("/auth/login"))
-                .cookie(cookie)
-                .build();
-    }
-
-    @GET
-    @Path("/logout")
     public Response doLogout(@CookieParam("userId") String userId) {
         if (userId != null && !userId.isEmpty()) {
             try {

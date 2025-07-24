@@ -21,13 +21,15 @@ public class UsuarioBO {
     @Inject
     LogBO logBO;
 
+    @Inject
+    BCryptPasswordEncoder passwordEncoder;
+
     public List<UsuarioListDTO> getUsuarios() {
         return dao.getAllUsuario();
     }
 
     @Transactional
     public Response saveUsuario(UsuarioDTO usuarioDTO) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String senha = passwordEncoder.encode(usuarioDTO.getSenha());
         Usuario usuario = new Usuario(usuarioDTO);
         usuario.setSenha(senha);

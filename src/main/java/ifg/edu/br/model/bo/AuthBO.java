@@ -15,12 +15,13 @@ public class AuthBO {
     @Inject
     LogBO logBO;
 
+    @Inject
+    BCryptPasswordEncoder passwordEncoder;
+
     public Usuario validarLogin(String email, String senha) {
         Usuario usuario = usuarioDAO.findByEmail(email);
 
         if (usuario != null) {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
             if (passwordEncoder.matches(senha, usuario.getSenha())) {
                 return usuario;
             }

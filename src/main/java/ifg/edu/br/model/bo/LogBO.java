@@ -15,7 +15,9 @@ public class LogBO {
     @Transactional
     public void registrarAcao(Usuario usuario, String acao) {
         Log novoLog = new Log();
-        novoLog.setUsuario(usuario);
+        if (usuario != null) {
+            novoLog.setUsuario(usuario);
+        }
         novoLog.setAcao(acao);
         dao.save(novoLog);
     }

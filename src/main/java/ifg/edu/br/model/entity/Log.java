@@ -18,15 +18,13 @@ public class Log {
     private LocalDateTime dataHora;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    // Construtores
     public Log() {
         this.dataHora = LocalDateTime.now();
     }
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }

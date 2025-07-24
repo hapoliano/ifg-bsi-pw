@@ -34,7 +34,6 @@ public class HomepageController {
     public Response getHomepage(@CookieParam("userId") String userId) {
 
         if (userId == null || userId.isEmpty()) {
-            logBO.registrarAcao(null, "ACESSO_NAO_AUTORIZADO - /homepage");
             return Response.status(Response.Status.SEE_OTHER)
                     .location(URI.create("/auth/login"))
                     .build();

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Minhas Contas - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/homepage.css" type="text/css"/>
+</head>
+<body>
+    {#include navbar.html/}
+<main class="container-padding flex">
+    <section class="dashboard-container">
+        <h2>Minhas Contas</h2>
+        <p>Acompanhe o saldo de suas contas.</p>
+        <a href="/contas/cadastro" class="btn" style="margin: 2rem 0; text-decoration: none; display: inline-block;">Adicionar Nova Conta</a>
+        <div class="recent-transactions">
+            {#if contas.isEmpty}
+                <p>Nenhuma conta registrada ainda.</p>
+            {#else}
+                <ul class="transaction-list">
+                    {#for conta in contas}
+                        <li class="transaction-item">
+                            <div class="transaction-info">
+                                <h4>{conta.nome}</h4>
+                                <p>{conta.tipo.getDescricao()}</p>
+                            </div>
+                            <div class="transaction-value">
+                                <span style="{conta.saldo.doubleValue() >= 0 ? 'color: #2a69ac;' : 'color: #c53030;'}">R$ {conta.saldo.toString()}</span>
+                            </div>
+                        </li>
+                    {/for}
+                </ul>
+            {/if}
+        </div>
+    </section>
+</main>
+</body>
+</html>

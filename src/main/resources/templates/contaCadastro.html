@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Adicionar Conta - Bytebank</title>
+    <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+</head>
+<script src="/js/conta.js"></script>
+<body>
+    {#include navbar.html/}
+<main class="container-padding flex">
+    <section class="block-saldo">
+        <h2>Adicionar Nova Conta</h2>
+        <p>Cadastre suas contas bancárias, poupanças ou carteira.</p>
+
+        <form id="contaForm">
+            <div class="campo">
+                <label for="nome">Nome da Conta:</label><br>
+                <input type="text" id="nome" class="campo-input" placeholder="Ex: Conta Corrente BB" required/>
+            </div>
+            <div class="campo">
+                <label for="saldo">Saldo Inicial (R$):</label><br>
+                <input type="number" step="0.01" id="saldo" class="campo-input" placeholder="1000.00" required/>
+            </div>
+            <div class="campo">
+                <label>Tipo de Conta:</label>
+                <div class="opcoes-radio">
+                    <div>
+                        <input type="radio" id="tipoCorrente" name="tipoConta" value="CONTA_CORRENTE" checked>
+                        <label for="tipoCorrente">Conta Corrente</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="tipoPoupanca" name="tipoConta" value="POUPANCA">
+                        <label for="tipoPoupanca">Poupança</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="tipoCarteira" name="tipoConta" value="CARTEIRA">
+                        <label for="tipoCarteira">Carteira</label>
+                    </div>
+                </div>
+            </div>
+            <div class="campo">
+                <button type="button" class="btn" onclick="salvarConta()">
+                    Salvar Conta
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

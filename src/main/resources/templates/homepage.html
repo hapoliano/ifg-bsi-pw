@@ -6,27 +6,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Homepage - Bytebank</title>
     <link rel="stylesheet" href="/css/app.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/homepage.css" type="text/css"/>
 </head>
 
 <body>
-{#include navbar.html/}
+    {#include navbar.html/}
 <main class="container-padding flex">
-    <section class="block-saldo">
+    <section class="dashboard-container">
+        <h2>Bem-vindo(a) ao seu Dashboard, {nomeDoUsuario}!</h2>
+        <p>Aqui está um resumo da sua vida financeira.</p>
 
-        <h2>Bem-vindo(a) ao Bytebank, {nomeDoUsuario}!</h2>
-        <p>Adcionar alguma frase legal</p>
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Limite dos Cartões</h3>
+                <p class="amount">R$ {dashboard.limiteTotalCartoes.toString()}</p>
+            </div>
+            <div class="summary-card">
+                <h3>Faturas Abertas</h3>
+                <p class="amount expense">R$ {dashboard.gastoTotalCartoes.toString()}</p>
+            </div>
+            <div class="summary-card">
+                <h3>Gastos do Mês</h3>
+                <p class="amount expense">R$ {dashboard.totalDespesasMesAtual.toString()}</p>
+            </div>
+        </div>
 
-        <hr style="margin: 2rem 0;">
+        <div class="recent-transactions">
+            <h3>Últimas Despesas Lançadas</h3>
+            {#if dashboard.ultimasDespesas.isEmpty}
+                <p>Nenhuma despesa registrada ainda.</p>
+            {#else}
+                <ul class="transaction-list">
+                    {#for despesa in dashboard.ultimasDespesas}
+                        <li class="transaction-item">
+                            <div class="transaction-info">
+                                <h4>{despesa.descricao}</h4>
+                                <p>{despesa.categoria} | {despesa.data}</p>
+                            </div>
+                            <div class="transaction-value">
+                                <span>R$ {despesa.valor.toString()}</span>
+                            </div>
+                        </li>
+                    {/for}
+                </ul>
+            {/if}
+        </div>
 
         {#if isAdmin}
-        <div class="admin-panel">
-            <h3>Painel Administrativo</h3>
-            <ul>
-                <li><a href="/usuario/cadastro" class="link-admin">Gerenciar Usuários</a></li>
-            </ul>
-        </div>
-        {#else}
-        <p>Explore os serviços disponíveis no menu principal.</p>
+            <div class="admin-panel">
+                <h3>Painel Administrativo</h3>
+                <p>Acesse as áreas de gestão do sistema.</p>
+            </div>
         {/if}
 
     </section>

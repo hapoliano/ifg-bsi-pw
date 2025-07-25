@@ -1,0 +1,93 @@
+.dashboard-container {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.summary-cards {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.summary-card h3 {
+    color: #4a5568;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.summary-card .amount {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #2a69ac;
+}
+
+.summary-card .amount.expense {
+    color: #c53030;
+}
+
+.recent-transactions {
+    margin-top: 2.5rem;
+    text-align: left;
+}
+
+.recent-transactions h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.transaction-list {
+    list-style: none;
+    padding: 0;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-info h4 {
+    margin: 0 0 0.25rem 0;
+    color: #1a202c;
+}
+
+.transaction-info p {
+    margin: 0;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+.transaction-value span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #c53030;
+}
+
+.admin-panel {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+}

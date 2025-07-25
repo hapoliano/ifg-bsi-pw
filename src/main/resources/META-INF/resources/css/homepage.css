@@ -91,3 +91,13 @@
     padding-top: 2rem;
     border-top: 1px solid #e2e8f0;
 }
+
+.summary-card .amount.expense {
+    color: #c53030;
+}
+
+.summary-card .amount-positive {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #2a69ac;
+}

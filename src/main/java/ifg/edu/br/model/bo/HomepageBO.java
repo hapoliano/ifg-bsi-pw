@@ -1,6 +1,7 @@
 package ifg.edu.br.model.bo;
 
 import ifg.edu.br.model.dao.CartaoCreditoDAO;
+import ifg.edu.br.model.dao.ContaDAO;
 import ifg.edu.br.model.dao.DespesaDAO;
 import ifg.edu.br.model.dto.HomepageDTO;
 import ifg.edu.br.model.dto.list.DespesaListDTO;
@@ -22,12 +23,16 @@ public class HomepageBO {
     @Inject
     DespesaDAO despesaDAO;
 
+    @Inject
+    ContaDAO contaDAO;
+
     public HomepageDTO getHomepageData(Usuario usuario) {
         HomepageDTO dto = new HomepageDTO();
         List<CartaoCredito> cartoes = cartaoCreditoDAO.findByUsuario(usuario);
 
         dto.setLimiteTotalCartoes(cartoes.stream().map(CartaoCredito::getLimiteCredito).reduce(BigDecimal.ZERO, BigDecimal::add));
         dto.setGastoTotalCartoes(cartoes.stream().map(CartaoCredito::getValorGasto).reduce(BigDecimal.ZERO, BigDecimal::add));
+        dto.setSaldoTotalContas(contaDAO.sumSaldoByUsuario(usuario));
 
         LocalDate hoje = LocalDate.now();
         dto.setTotalDespesasMesAtual(despesaDAO.sumDespesasByMonth(usuario, hoje.withDayOfMonth(1), hoje.withDayOfMonth(hoje.lengthOfMonth())));

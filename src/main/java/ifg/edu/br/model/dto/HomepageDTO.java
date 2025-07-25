@@ -9,7 +9,11 @@ public class HomepageDTO {
     private BigDecimal limiteTotalCartoes;
     private BigDecimal gastoTotalCartoes;
     private BigDecimal totalDespesasMesAtual;
+    private BigDecimal saldoTotalContas;
     private List<DespesaListDTO> ultimasDespesas;
+
+    public BigDecimal getSaldoTotalContas() { return saldoTotalContas; }
+    public void setSaldoTotalContas(BigDecimal saldoTotalContas) { this.saldoTotalContas = saldoTotalContas; }
 
     public BigDecimal getLimiteTotalCartoes() { return limiteTotalCartoes; }
     public void setLimiteTotalCartoes(BigDecimal limiteTotalCartoes) { this.limiteTotalCartoes = limiteTotalCartoes; }

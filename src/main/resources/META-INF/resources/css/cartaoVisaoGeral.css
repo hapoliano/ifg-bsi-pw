@@ -71,3 +71,21 @@
 .card-values {
     text-align: right;
 }
+
+.card-actions {
+    text-align: right;
+}
+
+.btn-delete {
+    background-color: #c53030;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-delete:hover {
+    background-color: #9b2c2c;
+}

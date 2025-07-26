@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/app.css" type="text/css"/>
     <link rel="stylesheet" href="/css/cartaoVisaoGeral.css" type="text/css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/cartao.js"></script>
 </head>
 <body>
     {#include navbar/}
@@ -48,6 +49,9 @@
                             <h4>Limite: R$ {cartao.limiteCredito}</h4>
                             <p>Fatura Atual: R$ {cartao.valorGasto}</p>
                         </div>
+                        <div class="card-actions">
+                            <button class="btn-delete" data-id="{cartao.id!}" onclick="deletarCartao(this)">Excluir</button>
+                        </div>
                     </li>
                 {/for}
             {/if}
@@ -65,6 +69,7 @@
             cartoes: [
                 {#for cartao in visao.cartoes}
                 {
+                    id: {cartao.id},
                     banco: '{cartao.banco}',
                     limiteCredito: {cartao.limiteCredito},
                     valorGasto: {cartao.valorGasto}

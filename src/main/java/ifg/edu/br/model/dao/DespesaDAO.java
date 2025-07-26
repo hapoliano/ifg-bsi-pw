@@ -1,5 +1,6 @@
 package ifg.edu.br.model.dao;
 
+import ifg.edu.br.model.entity.CartaoCredito;
 import ifg.edu.br.model.entity.Despesa;
 import ifg.edu.br.model.entity.Usuario;
 import jakarta.enterprise.context.Dependent;
@@ -35,5 +36,11 @@ public class DespesaDAO {
                 .setParameter("end", endOfMonth)
                 .getSingleResult();
         return result != null ? result : BigDecimal.ZERO;
+    }
+
+    public long countByCartaoCredito(CartaoCredito cartao) {
+        return em.createQuery("SELECT COUNT(d) FROM Despesa d WHERE d.cartaoCredito = :cartao", Long.class)
+                .setParameter("cartao", cartao)
+                .getSingleResult();
     }
 }

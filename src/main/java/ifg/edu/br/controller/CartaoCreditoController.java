@@ -130,4 +130,25 @@ public class CartaoCreditoController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deletarCartao(@PathParam("id") Long id, @CookieParam("userId") String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        try {
+            Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+            if (usuario == null) {
+                return Response.status(Response.Status.UNAUTHORIZED).entity("Usuário não encontrado.").build();
+            }
+            bo.deleteCartao(id, usuario);
+            return Response.status(Response.Status.NO_CONTENT).build();
+        } catch (WebApplicationException e) {
+            return Response.status(e.getResponse().getStatus()).entity("{\"error\":\"" + e.getMessage() + "\"}").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
 }

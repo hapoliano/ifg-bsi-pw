@@ -27,4 +27,12 @@ public class CartaoCreditoDAO {
     public CartaoCredito find(Long id) {
         return em.find(CartaoCredito.class, id);
     }
+
+    public void delete(CartaoCredito cartao) {
+        if (em.contains(cartao)) {
+            em.remove(cartao);
+        } else {
+            em.remove(em.merge(cartao));
+        }
+    }
 }

@@ -31,10 +31,20 @@ public class UsuarioController {
     @GET
     @Path("cadastro")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance getView() {
-        return usuarioCadastro
-                .data("isAdmin", true)
-                .data("nomeDoUsuario", "Admin Teste");
+    public Response getView(@CookieParam("userId") String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return Response.status(Response.Status.SEE_OTHER).location(URI.create("/auth/login")).build();
+        }
+
+        Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+        if (usuario == null || usuario.getTipo() != TipoUsuario.ADMIN) {
+            return Response.status(Response.Status.FORBIDDEN).location(URI.create("/homepage")).build();
+        }
+
+        return Response.ok(usuarioCadastro
+                        .data("isAdmin", true)
+                        .data("nomeDoUsuario", usuario.getNome()))
+                .build();
     }
 
     @GET

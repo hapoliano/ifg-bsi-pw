@@ -113,6 +113,7 @@
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                         <maven.home>${maven.home}</maven.home>
+                        <junit.platform.execution.listeners.default>false</junit.platform.execution.listeners.default>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

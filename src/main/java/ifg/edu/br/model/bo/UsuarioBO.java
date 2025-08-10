@@ -28,6 +28,18 @@ public class UsuarioBO {
         return dao.getAllUsuario();
     }
 
+    public UsuarioDTO getUsuarioDTO(Integer id) {
+        Usuario usuario = dao.find(id);
+        if (usuario == null) {
+            return null;
+        }
+        return new UsuarioDTO(usuario);
+    }
+
+    public Usuario getUsuarioEntity(Integer id) {
+       return dao.find(id);
+    }
+
     @Transactional
     public Response saveUsuario(UsuarioDTO usuarioDTO) {
         String senha = passwordEncoder.encode(usuarioDTO.getSenha());

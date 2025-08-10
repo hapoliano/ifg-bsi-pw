@@ -1,6 +1,7 @@
 package ifg.edu.br.model.dto;
 
 import ifg.edu.br.model.entity.TipoUsuario;
+import ifg.edu.br.model.entity.Usuario;
 
 public class UsuarioDTO {
 
@@ -8,6 +9,12 @@ public class UsuarioDTO {
     private String email;
     private String senha;
     private TipoUsuario tipo;
+
+    public UsuarioDTO(Usuario usuario) {
+        this.nome = usuario.getNome();
+        this.email = usuario.getEmail();
+        this.tipo = usuario.getTipo();
+    }
 
     public String getNome() {
         return nome;

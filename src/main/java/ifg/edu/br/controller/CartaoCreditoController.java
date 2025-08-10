@@ -2,8 +2,9 @@ package ifg.edu.br.controller;
 
 import ifg.edu.br.model.bo.CartaoCreditoBO;
 import ifg.edu.br.model.bo.LogBO;
-import ifg.edu.br.model.dao.UsuarioDAO;
+import ifg.edu.br.model.bo.UsuarioBO;
 import ifg.edu.br.model.dto.CartaoCreditoDTO;
+import ifg.edu.br.model.dto.UsuarioDTO;
 import ifg.edu.br.model.dto.list.VisaoGeralDTO;
 import ifg.edu.br.model.entity.TipoUsuario;
 import ifg.edu.br.model.entity.Usuario;
@@ -20,10 +21,10 @@ import java.net.URI;
 public class CartaoCreditoController {
 
     @Inject
-    UsuarioDAO usuarioDAO;
+    CartaoCreditoBO bo;
 
     @Inject
-    CartaoCreditoBO bo;
+    UsuarioBO usuarioBO;
 
     @Inject
     LogBO logBO;
@@ -38,40 +39,27 @@ public class CartaoCreditoController {
     @Path("/cadastro")
     @Produces(MediaType.TEXT_HTML)
     public Response getPaginaCadastro(@CookieParam("userId") String userId) {
-        // 1. Verifica se o usuário está logado
         if (userId == null || userId.isEmpty()) {
-            return Response.status(Response.Status.SEE_OTHER)
-                    .location(URI.create("/auth/login"))
-                    .build();
+            return redirectToLoginWithClearCookie();
         }
 
         try {
-            // 2. Busca o usuário no banco de dados
             Integer id = Integer.parseInt(userId);
-            Usuario usuarioLogado = usuarioDAO.find(id);
+            UsuarioDTO usuarioLogado = usuarioBO.getUsuarioDTO(id);
 
             if (usuarioLogado == null) {
-                // Se não encontrar o usuário, redireciona para o login
-                return Response.status(Response.Status.SEE_OTHER)
-                        .location(URI.create("/auth/login"))
-                        .build();
+                return redirectToLoginWithClearCookie();
             }
 
-            // 3. Verifica se o usuário é um administrador
             boolean isAdmin = usuarioLogado.getTipo() == TipoUsuario.ADMIN;
 
-            // 4. Prepara a instância do template com os dados corretos
             TemplateInstance templateInstance = cartaoCadastro
                     .data("isAdmin", isAdmin)
                     .data("nomeDoUsuario", usuarioLogado.getNome());
 
             return Response.ok(templateInstance).build();
-
         } catch (NumberFormatException e) {
-            // Se o cookie for inválido, redireciona para o login
-            return Response.status(Response.Status.SEE_OTHER)
-                    .location(URI.create("/auth/login"))
-                    .build();
+            return redirectToLoginWithClearCookie();
         }
     }
 
@@ -80,19 +68,16 @@ public class CartaoCreditoController {
     @Produces(MediaType.TEXT_HTML)
     public Response getPaginaVisaoGeral(@CookieParam("userId") String userId) {
         if (userId == null || userId.isEmpty()) {
-            return Response.seeOther(URI.create("/auth/login")).build();
+            return redirectToLoginWithClearCookie();
         }
 
         try {
-            Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+            Integer id = Integer.parseInt(userId);
+            Usuario usuario = usuarioBO.getUsuarioEntity(id);
 
             if (usuario == null) {
                 logBO.registrarAcao(null, "TENTATIVA_ACESSO_INVALIDA - Usuário não encontrado com ID do cookie: " + userId);
-                NewCookie cookie = new NewCookie.Builder("userId").value("").path("/").maxAge(0).build();
-                return Response.status(Response.Status.SEE_OTHER)
-                        .location(URI.create("/auth/login"))
-                        .cookie(cookie)
-                        .build();
+                return redirectToLoginWithClearCookie();
             }
 
             VisaoGeralDTO visaoGeral = bo.getVisaoGeral(usuario);
@@ -104,11 +89,7 @@ public class CartaoCreditoController {
                     .build();
 
         } catch (NumberFormatException e) {
-            NewCookie cookie = new NewCookie.Builder("userId").value("").path("/").maxAge(0).build();
-            return Response.status(Response.Status.SEE_OTHER)
-                    .location(URI.create("/auth/login"))
-                    .cookie(cookie)
-                    .build();
+            return redirectToLoginWithClearCookie();
         }
     }
 
@@ -120,7 +101,8 @@ public class CartaoCreditoController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         try {
-            Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+            Integer id = Integer.parseInt(userId);
+            Usuario usuario = usuarioBO.getUsuarioEntity(id);
             if (usuario == null) {
                 return Response.status(Response.Status.UNAUTHORIZED).entity("Usuário não encontrado.").build();
             }
@@ -129,5 +111,18 @@ public class CartaoCreditoController {
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
+    }
+
+    private Response redirectToLoginWithClearCookie() {
+        NewCookie cookie = new NewCookie.Builder("userId")
+                .value("")
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        return Response.status(Response.Status.SEE_OTHER)
+                .location(URI.create("/auth/login"))
+                .cookie(cookie)
+                .build();
     }
 }

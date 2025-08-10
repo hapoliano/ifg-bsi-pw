@@ -1,19 +1,17 @@
 package ifg.edu.br.controller;
 
 import ifg.edu.br.model.bo.ContaBO;
-import ifg.edu.br.model.dao.ContaDAO;
-import ifg.edu.br.model.dao.UsuarioDAO;
+import ifg.edu.br.model.bo.UsuarioBO;
 import ifg.edu.br.model.dto.ContaDTO;
 import ifg.edu.br.model.entity.Conta;
 import ifg.edu.br.model.entity.TipoUsuario;
 import ifg.edu.br.model.entity.Usuario;
 import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.net.URI;
+
 import java.util.List;
 
 @Path("/contas")
@@ -23,10 +21,7 @@ public class ContaController {
     ContaBO contaBO;
 
     @Inject
-    UsuarioDAO usuarioDAO;
-
-    @Inject
-    ContaDAO contaDAO;
+    UsuarioBO usuarioBO;
 
     @Inject
     Template contaCadastro;
@@ -38,7 +33,8 @@ public class ContaController {
     @Path("/cadastro")
     @Produces(MediaType.TEXT_HTML)
     public Response getPaginaCadastro(@CookieParam("userId") String userId) {
-        Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+        Integer id = Integer.parseInt(userId);
+        Usuario usuario = usuarioBO.getUsuarioEntity(id);
         return Response.ok(contaCadastro
                         .data("isAdmin", usuario.getTipo() == TipoUsuario.ADMIN)
                         .data("nomeDoUsuario", usuario.getNome()))
@@ -49,8 +45,9 @@ public class ContaController {
     @Path("/visao-geral")
     @Produces(MediaType.TEXT_HTML)
     public Response getPaginaVisaoGeral(@CookieParam("userId") String userId) {
-        Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
-        List<Conta> contas = contaDAO.findByUsuario(usuario);
+        Integer id = Integer.parseInt(userId);
+        Usuario usuario = usuarioBO.getUsuarioEntity(id);
+        List<Conta> contas = contaBO.findByUsuario(usuario);
         return Response.ok(contaVisaoGeral
                         .data("contas", contas)
                         .data("isAdmin", usuario.getTipo() == TipoUsuario.ADMIN)
@@ -65,7 +62,8 @@ public class ContaController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         try {
-            Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+            Integer id = Integer.parseInt(userId);
+            Usuario usuario = usuarioBO.getUsuarioEntity(id);
             contaBO.saveConta(dto, usuario);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {

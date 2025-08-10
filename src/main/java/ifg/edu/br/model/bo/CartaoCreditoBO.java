@@ -83,4 +83,8 @@ public class CartaoCreditoBO {
         dto.setValorGasto(cartao.getValorGasto());
         return dto;
     }
+
+    public List<CartaoCredito> findByUsuario(Usuario usuario) {
+        return dao.findByUsuario(usuario);
+    }
 }

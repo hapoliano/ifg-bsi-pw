@@ -8,6 +8,8 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 @Dependent
 public class ContaBO {
 
@@ -27,5 +29,9 @@ public class ContaBO {
 
         contaDAO.save(conta);
         logBO.registrarAcao(usuario, "CADASTRO_CONTA - Nome: " + dto.getNome());
+    }
+
+    public List<Conta> findByUsuario(Usuario usuario) {
+        return  contaDAO.findByUsuario(usuario);
     }
 }

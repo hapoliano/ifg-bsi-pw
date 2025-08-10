@@ -1,21 +1,22 @@
 package ifg.edu.br.controller;
 
+import ifg.edu.br.model.bo.CartaoCreditoBO;
+import ifg.edu.br.model.bo.CategoriaBO;
 import ifg.edu.br.model.bo.DespesaBO;
-import ifg.edu.br.model.dao.UsuarioDAO;
+import ifg.edu.br.model.bo.UsuarioBO;
 import ifg.edu.br.model.dto.DespesaDTO;
+import ifg.edu.br.model.entity.CartaoCredito;
+import ifg.edu.br.model.entity.Categoria;
 import ifg.edu.br.model.entity.Usuario;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
 import java.net.URI;
-import ifg.edu.br.model.dao.CartaoCreditoDAO;
-import ifg.edu.br.model.dao.CategoriaDAO;
 import java.util.List;
-import ifg.edu.br.model.entity.CartaoCredito;
-import ifg.edu.br.model.entity.Categoria;
-import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 
 @Path("/despesas")
 public class DespesaController {
@@ -24,13 +25,13 @@ public class DespesaController {
     DespesaBO bo;
 
     @Inject
-    UsuarioDAO usuarioDAO;
+    UsuarioBO usuarioBO;
 
     @Inject
-    CartaoCreditoDAO cartaoCreditoDAO;
+    CategoriaBO categoriaBO;
 
     @Inject
-    CategoriaDAO categoriaDAO;
+    CartaoCreditoBO cartaoCreditoBO;
 
     @Inject
     Template despesaCadastro;
@@ -43,9 +44,10 @@ public class DespesaController {
             return Response.status(Response.Status.SEE_OTHER).location(URI.create("/auth/login")).build();
         }
 
-        Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
-        List<CartaoCredito> cartoes = cartaoCreditoDAO.findByUsuario(usuario);
-        List<Categoria> categorias = categoriaDAO.listAll();
+        Integer id = Integer.parseInt(userId);
+        Usuario usuario = usuarioBO.getUsuarioEntity(id);
+        List<CartaoCredito> cartoes = cartaoCreditoBO.findByUsuario(usuario);
+        List<Categoria> categorias = categoriaBO.listAll();
 
         TemplateInstance template = despesaCadastro
                 .data("cartoes", cartoes)
@@ -64,7 +66,8 @@ public class DespesaController {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         try {
-            Usuario usuario = usuarioDAO.find(Integer.parseInt(userId));
+            Integer id = Integer.parseInt(userId);
+            Usuario usuario = usuarioBO.getUsuarioEntity(id);
             bo.saveDespesa(dto, usuario);
             return Response.status(Response.Status.CREATED).build();
         } catch (Exception e) {

@@ -16,7 +16,7 @@
         <h2>Visão Geral dos Cartões</h2>
 
         <div class="chart-container">
-            <h3>Gráfico de Limites vs. Faturas</h3>
+            <h3>Gráfico de Limites vs. Faturas Atuais</h3>
             <canvas id="graficoCartoes"></canvas>
         </div>
 
@@ -26,27 +26,46 @@
                 <p class="amount">R$ {visao.limiteTotal}</p>
             </div>
             <div class="summary-card">
-                <h3>Gastos Totais</h3>
+                <h3>Gastos Totais (Faturas Abertas)</h3>
                 <p class="amount" style="color: #c53030;">R$ {visao.gastoTotal}</p>
             </div>
         </div>
 
         <a href="/cartoes/cadastro" class="btn" style="margin-bottom: 2rem; text-decoration: none; display: inline-block;">Adicionar Novo Cartão</a>
 
-        <h3>Detalhes dos Cartões</h3>
+        <h3>Detalhes dos Cartões e Faturas</h3>
         <ul class="card-list">
             {#if visao.cartoes.isEmpty}
                 <p>Você ainda não cadastrou nenhum cartão.</p>
             {#else}
                 {#for cartao in visao.cartoes}
-                    <li class="card-item">
-                        <div class="card-info">
-                            <h4>{cartao.banco}</h4>
-                            <p>Validade: {cartao.dataValidade}</p>
+                    <li class="card-item-container">
+                        <div class="card-item">
+                            <div class="card-info">
+                                <h4>{cartao.banco}</h4>
+                                <p>Validade: {cartao.dataValidade}</p>
+                            </div>
+                            <div class="card-values">
+                                <h4>Limite: R$ {cartao.limiteCredito}</h4>
+                                <p>Fatura Atual: R$ {cartao.valorGasto}</p>
+                            </div>
                         </div>
-                        <div class="card-values">
-                            <h4>Limite: R$ {cartao.limiteCredito}</h4>
-                            <p>Fatura Atual: R$ {cartao.valorGasto}</p>
+
+                        <div class="faturas-historicas">
+                            <h5>Histórico de Faturas</h5>
+                            {#if cartao.faturas.isEmpty}
+                                <p class="sem-faturas">Nenhuma fatura fechada encontrada para este cartão.</p>
+                            {#else}
+                                <ul class="fatura-list">
+                                    {#for fatura in cartao.faturas}
+                                        <li class="fatura-item">
+                                            <span class="fatura-mes">{fatura.mesReferencia}</span>
+                                            <span class="fatura-valor">R$ {fatura.valorTotal}</span>
+                                            <span class="fatura-vencimento">Vencimento: {fatura.dataVencimento}</span>
+                                        </li>
+                                    {/for}
+                                </ul>
+                            {/if}
                         </div>
                     </li>
                 {/for}
@@ -68,13 +87,14 @@
                     banco: '{cartao.banco}',
                     limiteCredito: {cartao.limiteCredito},
                     valorGasto: {cartao.valorGasto}
+                    // Os dados da fatura não são necessários para o gráfico, apenas para o HTML
                 },
                 {/for}
             ]
         };
 
-        // Prepara os dados para o gráfico
-        const labels = ['Total'];
+        // Prepara os dados para o gráfico (Mantido como está)
+        const labels = ['Total (Faturas Abertas)'];
         const limites = [visaoGeral.limiteTotal];
         const gastos = [visaoGeral.gastoTotal];
 
@@ -95,7 +115,7 @@
                     borderWidth: 1
                 },
                 {
-                    label: 'Fatura Atual (R$)',
+                    label: 'Fatura Aberta (R$)',
                     data: gastos,
                     backgroundColor: 'rgba(255, 99, 132, 0.5)', // Vermelho
                     borderColor: 'rgba(255, 99, 132, 1)',
@@ -104,7 +124,7 @@
             ]
         };
 
-        // Configuração do gráfico
+        // Configuração do gráfico (Mantida)
         const config = {
             type: 'bar',
             data: data,

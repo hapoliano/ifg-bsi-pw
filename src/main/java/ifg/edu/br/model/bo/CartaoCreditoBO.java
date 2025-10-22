@@ -1,11 +1,13 @@
 package ifg.edu.br.model.bo;
 
-// ... outros imports
 import ifg.edu.br.model.dao.CartaoCreditoDAO;
+import ifg.edu.br.model.dao.FaturaDAO;
 import ifg.edu.br.model.dto.CartaoCreditoDTO;
 import ifg.edu.br.model.dto.list.CartaoInfoDTO;
+import ifg.edu.br.model.dto.list.FaturaInfoDTO;
 import ifg.edu.br.model.dto.list.VisaoGeralDTO;
 import ifg.edu.br.model.entity.CartaoCredito;
+import ifg.edu.br.model.entity.Fatura;
 import ifg.edu.br.model.entity.Usuario;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
@@ -23,6 +25,9 @@ public class CartaoCreditoBO {
 
     @Inject
     CartaoCreditoDAO dao;
+
+    @Inject
+    FaturaDAO faturaDAO;
 
     @Inject
     LogBO logBO;
@@ -81,6 +86,15 @@ public class CartaoCreditoBO {
         dto.setDataValidade(cartao.getDataValidade().format(DateTimeFormatter.ofPattern("MM/yyyy")));
         dto.setLimiteCredito(cartao.getLimiteCredito());
         dto.setValorGasto(cartao.getValorGasto());
+
+        List<Fatura> faturas = faturaDAO.findByCartao(cartao);
+
+        List<FaturaInfoDTO> faturasDTO = faturas.stream()
+                .map(FaturaInfoDTO::new)
+                .collect(Collectors.toList());
+
+        dto.setFaturas(faturasDTO);
+
         return dto;
     }
 

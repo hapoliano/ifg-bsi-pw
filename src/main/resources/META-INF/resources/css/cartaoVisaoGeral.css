@@ -71,3 +71,79 @@
 .card-values {
     text-align: right;
 }
+
+/* Novo container para agrupar card e faturas */
+.card-item-container {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* Remove o padding se a lista interna já o tiver */
+    padding: 0;
+}
+
+/* Modifica o card-item existente */
+.card-item {
+    background-color: transparent; /* Fica transparente dentro do container */
+    border: none; /* Remove a borda individual */
+    border-bottom: 1px solid #e2e8f0; /* Adiciona linha separadora */
+    border-radius: 8px 8px 0 0; /* Arredonda só os cantos de cima */
+    margin-bottom: 0; /* Remove a margem de baixo */
+}
+
+/* Nova seção de histórico de faturas */
+.faturas-historicas {
+    padding: 1.5rem;
+}
+
+.faturas-historicas h5 {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.faturas-historicas .sem-faturas {
+    color: #718096;
+    font-style: italic;
+    text-align: left;
+    padding: 0.5rem 0;
+}
+
+.fatura-list {
+    list-style: none;
+    padding: 0;
+}
+
+.fatura-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 0.5rem;
+    border-bottom: 1px solid #f0f2f5; /* Linha separadora bem clara */
+}
+
+.fatura-item:last-child {
+    border-bottom: none;
+}
+
+.fatura-item .fatura-mes {
+    font-weight: 600;
+    color: #2d3748;
+    flex: 2; /* Ocupa mais espaço */
+}
+
+.fatura-item .fatura-valor {
+    font-weight: 600;
+    color: #c53030; /* Vermelho para gastos */
+    flex: 1.5;
+    text-align: right;
+}
+
+.fatura-item .fatura-vencimento {
+    color: #718096;
+    font-size: 0.9rem;
+    flex: 1.5;
+    text-align: right;
+}
